@@ -1,9 +1,9 @@
 from flask import Blueprint, abort, request
 from ami_client.operation.action import Login, Logoff, Originate
 
-from api_connections import ami_connection
-from config import ami_configs
-from utils import create_response
+from ..api_connections import ami_connection
+from ..config import ami_configs
+from ..utils import create_response
 
 callcenter_bp = Blueprint('callcenter', 'callcenter', url_prefix='/callcenter')
 

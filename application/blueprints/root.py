@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-from __version__ import __version__
-from utils import create_response
+from ..__version__ import __version__
+from ..utils import create_response
 
 root_bp = Blueprint('root', 'root', url_prefix='/')
 

@@ -1,17 +1,16 @@
 # Load Dotenv first
 try:
-    import dotenv # type: ignore
+    import dotenv
     dotenv.load_dotenv()
 except ImportError: pass
 
 from flask import Flask
+from application.__version__ import __version__
+from application.utils import init_logging
+from application.config import logging_config, flask_configs, flask_run_configs
+from application.blueprints import blueprints
 
-from __version__ import __version__
-from utils import initiate_logging
-from config import logging_config, flask_configs, flask_run_configs
-from blueprints import blueprints
-
-initiate_logging(logging_config)
+init_logging(**logging_config)
 
 app = Flask(__name__)
 app.config.update(flask_configs)

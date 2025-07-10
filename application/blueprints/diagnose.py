@@ -1,9 +1,9 @@
 import time
 from flask import Blueprint, redirect, request, url_for
 
-from __version__ import __version__
-from api_connections import netbox_connection
-from utils import create_response
+from ..__version__ import __version__
+from ..api_connections import netbox_connection
+from ..utils import create_response
 
 diagnose_bp = Blueprint('diagnose', 'diagnose', url_prefix='/diagnose')
 

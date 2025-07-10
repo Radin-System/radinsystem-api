@@ -1,16 +1,16 @@
 import logging
 
-def initiate_logging(logging_config) -> None:
+def init_logging(log_file: str, log_level: str) -> None:
     # Create handlers
     logger = logging.getLogger()
     console_handler = logging.StreamHandler()
-    file_handler = logging.FileHandler(logging_config['log_file'])
+    file_handler = logging.FileHandler(log_file)
 
     # Set Log Levels
-    log_level = getattr(logging, logging_config['log_level'], logging.INFO)
-    logger.setLevel(log_level)
-    console_handler.setLevel(log_level)    
-    file_handler.setLevel(log_level)
+    _level = getattr(logging, log_level.upper(), logging.INFO)
+    logger.setLevel(_level)
+    console_handler.setLevel(_level)    
+    file_handler.setLevel(_level)
 
     # Set Formaters
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
