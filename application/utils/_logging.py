@@ -1,6 +1,10 @@
-import logging
+import os, logging
 
-def init_logging(log_file: str, log_level: str) -> None:
+def init_logging(log_file: str, log_level: str) -> logging.Logger:
+    # Ensure Log File Exists or can be created
+    if not os.path.exists(os.path.dirname(log_file)):
+        os.makedirs(os.path.dirname(log_file))
+
     # Create handlers
     logger = logging.getLogger()
     console_handler = logging.StreamHandler()
@@ -20,3 +24,5 @@ def init_logging(log_file: str, log_level: str) -> None:
     # Add the handlers to the logger
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
+
+    return logger

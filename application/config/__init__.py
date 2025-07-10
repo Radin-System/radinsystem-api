@@ -1,3 +1,9 @@
+try:
+    import dotenv
+    dotenv.load_dotenv()
+except ImportError: 
+    print('Warning, Loading environment variables from .env file failed !!!')
+
 from ._asterisk import ami_configs
 from ._database import database_configs
 from ._flask import flask_configs, flask_run_configs

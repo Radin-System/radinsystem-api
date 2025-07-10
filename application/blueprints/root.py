@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from ..__version__ import __version__
+from ..__version__ import get_version
 from ..utils import create_response
 
 root_bp = Blueprint('root', 'root', url_prefix='/')
@@ -13,6 +13,6 @@ def index():
 def version():
     return create_response(
         {
-            'version': __version__,
+            'version': get_version(),
         }
     )
