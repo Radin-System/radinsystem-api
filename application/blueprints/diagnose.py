@@ -1,8 +1,11 @@
 import time
 from flask import Blueprint, redirect, request, url_for
-
-from ..__version__ import __version__
-from ..api_connections import netbox_connection
+from ..api_connections import (
+    APITester,
+    ami_connection,
+    netbox_connection,
+    sarv_connection
+)
 from ..utils import create_response
 
 diagnose_bp = Blueprint('diagnose', 'diagnose', url_prefix='/diagnose')
@@ -30,18 +33,16 @@ def what_is_my_ip():
 
 @diagnose_bp.route('/api-connections')
 def api_connections():
-    try:
-        netbox_version= netbox_connection.version
-        netbox_status = 'Connected'
-    except:
-        netbox_version = None
-        netbox_status = 'Not Connected'
-
     return create_response(
         {
             'netbox': {
-                'status': netbox_status,
-                'version': netbox_version,
-            }
+                'message': str(APITester.test_netbox(netbox_connection))
+            },
+            'ami': {
+                'message': str(APITester.test_ami(ami_connection))
+            },
+            'sarvcrm': {
+                'message': str(APITester.test_sarv(sarv_connection))
+            },
         }
     )

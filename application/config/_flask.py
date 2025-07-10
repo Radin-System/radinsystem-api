@@ -1,7 +1,7 @@
 import os
 from typing import Dict, Any
 
-from utils import create_database_uri
+from ..utils import create_database_uri
 from ._database import database_configs
 
 flask_run_configs: Dict[str, Any] = {
