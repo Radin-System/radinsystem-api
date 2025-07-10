@@ -1,7 +1,9 @@
 import os
 from typing import Dict, Any
+from sarvcrm_api import SarvURL
 
 sarv_config: Dict[str, Any] = {
+    'url': os.environ.get('SARVCRM_URL', SarvURL),
     'utype': os.environ.get('SARVCRM_UTYPE'),
     'username': os.environ.get('SARVCRM_USERNAME'),
     'password': os.environ.get('SARVCRM_PASSWORD'),
