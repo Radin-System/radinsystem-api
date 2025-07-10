@@ -1,7 +1,7 @@
 # Misc
 requests
 python-dotenv
-git+https://github.com/Hmohammad2520-org/classmods.git
+classmods
 
 # Flask
 flask
@@ -10,4 +10,4 @@ flask-sqlalchemy
 # API Connections
 pynetbox
 git+https://github.com/Hmohammad2520-org/py-ami-client.git
-git+//https://github.com/Radin-System/py-sarvcrm-api.git
+git+https://github.com/Radin-System/py-sarvcrm-api.git
