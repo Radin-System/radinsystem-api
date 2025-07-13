@@ -5,14 +5,17 @@ except ImportError:
     print('Warning, Loading environment variables from .env file failed !!!')
 
 from ._asterisk import ami_configs
+from ._callcenter import callcenter_configs
 from ._database import database_configs
 from ._flask import flask_configs, flask_run_configs
 from ._logging import logging_config
 from ._netbox import netbox_configs
 from ._sarvcrm import sarv_config
 
+
 __all__ = [
     'ami_configs',
+    'callcenter_configs',
     'database_configs',
     'flask_configs',
     'flask_run_configs',

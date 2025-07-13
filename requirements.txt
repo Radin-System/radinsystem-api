@@ -9,5 +9,5 @@ flask-sqlalchemy
 
 # API Connections
 pynetbox
-git+https://github.com/Hmohammad2520-org/py-ami-client.git
+py-ami-client
 git+https://github.com/Radin-System/py-sarvcrm-api.git

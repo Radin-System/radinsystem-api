@@ -1,5 +1,5 @@
 import time
-from flask import Blueprint, redirect, request, url_for
+from flask import Blueprint, redirect, url_for, request
 from ..api_connections import (
     APITester,
     ami_connection,

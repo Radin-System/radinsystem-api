@@ -1,5 +1,4 @@
 from flask import Blueprint
-
 from ..__version__ import get_version
 from ..utils import create_response
 
