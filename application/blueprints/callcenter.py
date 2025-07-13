@@ -49,12 +49,14 @@ def phonebook():
 
 @callcenter_bp.route('/originate', methods=['POST'])
 def originate():
-    if request.json:
-        exten = request.json.get('exten')
-        number = request.json.get('number')
+    if not request.json:
+        abort(415)
 
-    else: abort(415)
-    if not exten or not number: abort(400)
+    exten = request.json.get('exten')
+    number = request.json.get('number')        
+
+    if not exten or not number: 
+        abort(400)
 
     originate_response = Originate(
         CallerID=f'Calling: {number}',
@@ -70,8 +72,7 @@ def originate():
         close_connection=True
     )
 
-    if originate_response:
-        return create_response(originate_response._dict)
-
-    else:
+    if not originate_response:
         return abort(500)
+
+    return create_response(originate_response._dict)
