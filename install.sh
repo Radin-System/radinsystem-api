@@ -37,4 +37,4 @@ fi
 echo "[*] Installation complete."
 echo "✅ App is now running as a service."
 echo "🟢 To run manually:"
-echo "$VENV_DIR/bin/gunicorn -w 4 -b 0.0.0.0:8001 app:app"
+echo "$VENV_DIR/bin/gunicorn -w 4 -b 0.0.0.0:8000 app:app"
