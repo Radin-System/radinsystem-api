@@ -16,6 +16,10 @@ echo "[*] Installing dependencies..."
 pip install --upgrade pip
 pip install -r "$APP_DIR/requirements.txt" || { echo "❌ Failed to install dependencies"; exit 1; }
 
+echo "[*] Setting ownership and permissions..."
+sudo chown -R radin:radin "$APP_DIR"
+sudo chmod -R 755 "$APP_DIR"
+
 echo "[*] Copying systemd service file..."
 if [ "$(id -u)" -ne 0 ]; then
     echo "⚠️  Root required to install systemd service. Please enter your password."
@@ -33,4 +37,4 @@ fi
 echo "[*] Installation complete."
 echo "✅ App is now running as a service."
 echo "🟢 To run manually:"
-echo "$VENV_DIR/bin/gunicorn -w 4 -b 0.0.0.0:8000 app:app"
+echo "$VENV_DIR/bin/gunicorn -w 4 -b 0.0.0.0:8001 app:app"
