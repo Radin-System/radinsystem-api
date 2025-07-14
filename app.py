@@ -5,4 +5,6 @@ from application import create_app
 
 init_logging(**logging_config)
 app = create_app(__name__)
-app.run(**flask_run_configs)
+
+if __name__ == '__main__':
+    app.run(**flask_run_configs)
