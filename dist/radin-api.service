@@ -5,8 +5,8 @@ After=network.target
 [Service]
 User=radin
 Group=radin
-WorkingDirectory=/opt/radin-api/
-ExecStart=/opt/radin-api/.venv/bin/gunicorn -c gunicorn_config.py app:app
+WorkingDirectory=/opt/radinsystem-api/
+ExecStart=/opt/radinsystem-api/.venv/bin/gunicorn -c gunicorn_config.py app:app
 Restart=always
 
 [Install]
