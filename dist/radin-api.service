@@ -1,0 +1,13 @@
+[Unit]
+Description=Radin Api (Gunicorn)
+After=network.target
+
+[Service]
+User=radin
+Group=radin
+WorkingDirectory=/opt/radin-api/
+ExecStart=/opt/radin-api/.venv/bin/gunicorn -c gunicorn_config.py app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

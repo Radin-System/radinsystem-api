@@ -1,0 +1,14 @@
+# Misc
+requests
+python-dotenv
+classmods
+
+# Flask
+flask
+flask-sqlalchemy
+gunicorn
+
+# API Connections
+pynetbox
+py-ami-client
+git+https://github.com/Radin-System/py-sarvcrm-api.git
