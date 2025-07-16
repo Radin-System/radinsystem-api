@@ -3,13 +3,10 @@ from typing import Any
 from functools import wraps
 from flask import request, abort
 
-from ..api_connections import netbox_connection
-
-
-def token_required() -> Any:
+def token_required(client) -> Any:
     if 'Authorization' in request.headers:
         _, token = request.headers.get('Authorization', ' ').split('Token ', 1)
-        tenant = netbox_connection.tenancy
+        tenant = client.tenancy
 
 def private_addresses_only(_func=None, *, config=True):
     def decorator(func):
