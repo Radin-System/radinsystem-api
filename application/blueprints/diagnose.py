@@ -6,7 +6,7 @@ from ..api_connections import (
     netbox_connection,
     sarv_connection
 )
-from ..utils import create_response
+from ..utils import create_response, private_addresses_only  
 
 diagnose_bp = Blueprint('diagnose', 'diagnose', url_prefix='/diagnose')
 
@@ -26,12 +26,13 @@ def version():
 def what_is_my_ip():
     return create_response(
         {
-            'client-address': request.remote_addr,
+            'client-address': request.headers.get('X-Real-IP', request.remote_addr),
             'server-address': request.host,
         }
     )
 
 @diagnose_bp.route('/api-connections')
+@private_addresses_only
 def api_connections():
     return create_response(
         {

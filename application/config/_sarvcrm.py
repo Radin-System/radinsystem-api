@@ -1,6 +1,6 @@
 import os
 from typing import Dict, Any
-from sarvcrm_api import SarvURL
+from sarvcrm_api import SarvURL, SarvClient
 
 sarv_config: Dict[str, Any] = {
     'url': os.environ.get('SARVCRM_URL', SarvURL),
@@ -10,4 +10,6 @@ sarv_config: Dict[str, Any] = {
     'login_type': os.environ.get('SARVCRM_LOGIN_TYPE'),
     'language': os.environ.get('SARVCRM_LANGUAGE', 'en_US'),
     'is_password_md5': os.environ.get('SARVCRM_IS_PASSWORD_MD5', False),
+    'caching': os.environ.get('SARVCRM_CACHING', True),
+    'cache_backend': os.environ.get('SARVCRM_CACHE_BACKEND', 'memory')
 }
