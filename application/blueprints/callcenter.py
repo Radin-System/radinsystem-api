@@ -8,7 +8,7 @@ from ..utils import create_response
 callcenter_bp = Blueprint('callcenter', 'callcenter', url_prefix='/callcenter')
 
 @callcenter_bp.route('/phonebook', methods=['GET'])
-@private_addresses_only(callcenter_configs.get('phonebook_local_only'))
+@private_addresses_only(request, callcenter_configs.get('phonebook_local_only', False))
 def phonebook():
     if not (
         request.args.get('password') is not None
@@ -56,10 +56,10 @@ def phonebook():
         abort(500)
 
     else:
-        abort(401)
+        abort(400)
 
 @callcenter_bp.route('/originate', methods=['POST'])
-@private_addresses_only(callcenter_configs.get('phonebook_local_only'))
+@private_addresses_only(request, callcenter_configs.get('phonebook_local_only', False))
 def originate():
     if not request.json:
         abort(415)

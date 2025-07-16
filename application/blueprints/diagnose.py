@@ -32,7 +32,7 @@ def what_is_my_ip():
     )
 
 @diagnose_bp.route('/api-connections')
-@private_addresses_only
+@private_addresses_only(request)
 def api_connections():
     return create_response(
         {
