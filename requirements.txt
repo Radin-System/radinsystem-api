@@ -14,7 +14,7 @@ Jinja2==3.1.6
 MarkupSafe==3.0.2
 packaging==25.0
 py-ami-client==0.0.2
-py-sarvcrm-api @ git+https://github.com/Radin-System/py-sarvcrm-api.git@3b5f71465b0912d13cc2e2690e137f40ef316aa0
+py-sarvcrm-api==1.1.2
 pynetbox==7.5.0
 python-dotenv==1.1.1
 requests==2.32.4
