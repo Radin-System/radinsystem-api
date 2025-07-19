@@ -1,9 +1,11 @@
+from typing import Any, Dict, List
 from flask import Blueprint, abort, request
 from ami_client.operation.action import Originate
 from ..utils import private_addresses_only
 from ..api_connections import ami_connection, sarv_connection
 from ..config import callcenter_configs
-from ..utils import create_response
+from ..utils import create_response, convert_sarv_item_to_mikrosip
+
 
 callcenter_bp = Blueprint('callcenter', 'callcenter', url_prefix='/callcenter')
 
@@ -17,39 +19,30 @@ def phonebook():
         ):
         abort(401)
 
-    contacts_to_send = []
+    phonebook: List[Dict[str, Any]] = []
 
     with sarv_connection:
-        #users = sarv_connection.Users.real_list_all(caching=True)
-        #accounts = sarv_connection.Accounts.read_list_all(caching=True)
+        users = sarv_connection.Users.read_list_all(caching=True)
+        accounts = sarv_connection.Accounts.read_list_all(caching=True)
         contacts = sarv_connection.Contacts.read_list_all(caching=True)
 
     if request.args.get('type') == 'micro-sip':
-        for contact in contacts:
-            firstname = contact.get('first_name', '')
-            lastname = contact.get('last_name', '')
-            account = contact.get('account_name', '')
-            name = f'{firstname}{' '+lastname if lastname else ''}'
+        for user in users:
+            user_numbers = convert_sarv_item_to_mikrosip(user, 'User')
+            #if user_numbers: phonebook += user_numbers
 
-            temp = {
-                "number": contact.get('primary_number_raw', ''),
-                "name": f'{'('+ account +') - ' if account and name not in account else ''}{name}',
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": contact.get('email1', ''),
-                "address": contact.get('primary_address_street', ''),
-                "city": contact.get('primary_address_city', ''),
-                "state": contact.get('primary_address_state', ''),
-                "zip": contact.get('primary_address_postalcode', ''),
-                "comment": sarv_connection.Contacts.get_url_detail_view(contact.get('id', '')),
-            }
-            temp = {k: v for k, v in temp.items() if v}
-            contacts_to_send.append(temp)
+        for account in accounts:
+            account_numbers = convert_sarv_item_to_mikrosip(account, 'Account')
+            if account_numbers: phonebook += account_numbers
+
+        for contact in contacts:
+            contact_numbers = convert_sarv_item_to_mikrosip(contact, 'Contact')
+            #if contact_numbers: phonebook += contact_numbers
 
         return create_response(
             message = f'All contacts from sarvcrm', 
             refresh = 3600,
-            items = contacts_to_send,
+            items = phonebook,
         )
 
     if request.args.get('type') == 'radin-client':
