@@ -6,7 +6,7 @@ ami_configs: Dict[str, Any] = {
     'port': int(os.environ.get('AMI_PORT', 5038)),
     'Username': os.environ.get('AMI_USERNAME'),
     'Secret': os.environ.get('AMI_SECRET'),
-    'AuthType': os.environ.get('AMI_AUTHTYPE'),
+    'AuthType': os.environ.get('AMI_AUTHTYPE', 'plain'),
     'Key': os.environ.get('AMI_KEY'),
     'Events': os.environ.get('AMI_EVENTS'),
 }

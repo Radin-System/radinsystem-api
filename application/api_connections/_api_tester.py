@@ -18,4 +18,4 @@ class APITester:
     @suppress_errors('exception')
     def test_sarv(sarv: SarvClient) -> str:
         sarv.login()
-        return "v'5.0.0'" if sarv.url.endswith("API.php") else sarv.url.split('/')[5].replace('_', '.')
+        return "v'5.0.0'" if sarv._url.endswith("API.php") else sarv._url.split('/')[5].replace('_', '.')
