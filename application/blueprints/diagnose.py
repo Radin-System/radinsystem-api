@@ -6,7 +6,7 @@ from ..api_connections import (
     netbox_connection,
     sarv_connection
 )
-from ..utils import create_response, private_addresses_only  
+from ..utils import create_response, private_addresses_only
 
 diagnose_bp = Blueprint('diagnose', 'diagnose', url_prefix='/diagnose')
 

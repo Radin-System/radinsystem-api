@@ -6,7 +6,6 @@ from ..api_connections import ami_connection, sarv_connection
 from ..config import callcenter_configs
 from ..utils import create_response, convert_sarv_item_to_mikrosip
 
-
 callcenter_bp = Blueprint('callcenter', 'callcenter', url_prefix='/callcenter')
 
 @callcenter_bp.route('/phonebook', methods=['GET'])
@@ -20,24 +19,18 @@ def phonebook():
         abort(401)
 
     phonebook: List[Dict[str, Any]] = []
-
     with sarv_connection:
-        users = sarv_connection.Users.read_list_all(caching=True)
         accounts = sarv_connection.Accounts.read_list_all(caching=True)
         contacts = sarv_connection.Contacts.read_list_all(caching=True)
 
     if request.args.get('type') == 'micro-sip':
-        for user in users:
-            user_numbers = convert_sarv_item_to_mikrosip(user, 'User')
-            #if user_numbers: phonebook += user_numbers
-
         for account in accounts:
-            account_numbers = convert_sarv_item_to_mikrosip(account, 'Account')
+            account_numbers = convert_sarv_item_to_mikrosip(sarv_connection, account, 'Account')
             if account_numbers: phonebook += account_numbers
 
         for contact in contacts:
-            contact_numbers = convert_sarv_item_to_mikrosip(contact, 'Contact')
-            #if contact_numbers: phonebook += contact_numbers
+            contact_numbers = convert_sarv_item_to_mikrosip(sarv_connection, contact, 'Contact')
+            if contact_numbers: phonebook += contact_numbers
 
         return create_response(
             message = f'All contacts from sarvcrm', 
@@ -45,7 +38,7 @@ def phonebook():
             items = phonebook,
         )
 
-    if request.args.get('type') == 'radin-client':
+    elif request.args.get('type') == 'radin-client':
         abort(500)
 
     else:
