@@ -1,6 +1,7 @@
 /.git/
 /.venv/
 /.log/
+/agent_packages/
 
 .env
 

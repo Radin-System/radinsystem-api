@@ -16,7 +16,9 @@ def private_addresses_only(request, config=True):
                 return func(*args, **kwargs)
 
             try:
-                ip = ipaddress.ip_address(request.remote_addr or '')
+                ip = ipaddress.ip_address(
+                    request.headers.get('X-Real-IP', request.remote_addr)
+                )
                 abort(403) if not ip.is_private else None
 
             except ValueError:

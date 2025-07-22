@@ -1,10 +1,10 @@
-from typing import Dict, Optional, Union
+from typing import Any, Dict, Optional, TypeAlias
 from flask import Response, jsonify
 
-JsonSerializable = Union[str, list, dict, tuple, int, float, bool, None]
+JsonSerializable: TypeAlias = Any
 
 def create_response(
-        data: Optional[Dict[str, JsonSerializable ]] = None,
+        data: Optional[Dict[str, JsonSerializable]] = None,
         message: Optional[str] = None,
         status_code: int = 200,
         **kwargs: JsonSerializable,
