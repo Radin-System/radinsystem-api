@@ -1,8 +1,15 @@
-/.git/
-/.venv/
-/.log/
-/agent_packages/
+# abc folders
+.git/
+.pytest_cache/
+.venv/
+.temp/
+.log/
+.db/
+.dev/
+__cache__/
 
+# abc Files
 .env
-
 dev_*.*
+
+agent_packages/

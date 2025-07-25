@@ -1,5 +1,4 @@
 from sarvcrm_api import SarvClient
+from classmods import ENVMod
 
-from ..config import sarv_config
-
-sarv_connection = SarvClient(**sarv_config)
+sarv_connection = SarvClient(**ENVMod.load_args(SarvClient.__init__))

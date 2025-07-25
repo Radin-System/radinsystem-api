@@ -1,17 +1,38 @@
-import os
+from classmods import ENVMod
 from typing import Dict, Any
 
-from ..utils import create_database_uri
-from ._database import database_configs
+flask_host = ENVMod.add(
+    name = 'host',
+    section_name = 'flask',
+    type_hint = str,
+    default = '127.0.0.1',
+)
+flask_port = ENVMod.add(
+    name = 'port',
+    section_name = 'flask',
+    type_hint = int,
+    default = '8080',
+)
+flask_debug = ENVMod.add(
+    name = 'debug',
+    section_name = 'flask',
+    type_hint = bool,
+    default = 'True',
+)
+flask_secret_key = ENVMod.add(
+    name = 'secret_key',
+    section_name = 'flask',
+    type_hint = str,
+    required = True
+)
 
 flask_run_configs: Dict[str, Any] = {
-    'host': os.environ.get('FLASK_HOST', '127.0.0.1'),
-    'port': int(os.environ.get('FLASK_PORT', 8080)),
-    'debug': os.environ.get('FLASK_DEBUG', 'true')
+    'host': flask_host.load_value(),
+    'port': flask_port.load_value(),
+    'debug': flask_debug.load_value(),
 }
 
 flask_configs: Dict[str, Any] = {
-    'SECRET_KEY': os.environ.get('FLASK_SECRET'),
-    'SQLALCHEMY_DATABASE_URI': create_database_uri(**database_configs),
+    'SECRET_KEY': flask_secret_key.load_value(),
     'SQLALCHEMY_TRACK_MODIFICATIONS': True,
 }

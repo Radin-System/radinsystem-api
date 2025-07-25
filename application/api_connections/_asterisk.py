@@ -1,5 +1,4 @@
 from ami_client import AMIClient
+from classmods import ENVMod
 
-from ..config import ami_configs
-
-ami_connection = AMIClient(**ami_configs)
+ami_connection = AMIClient(**ENVMod.load_args(AMIClient.__init__))
