@@ -5,6 +5,7 @@ from ._logging import init_logging
 from ._microsip import convert_sarv_item_to_mikrosip
 from ._sql import create_database_uri
 
+
 __all__ = [
     'private_addresses_only',
     'create_agent_file_path',

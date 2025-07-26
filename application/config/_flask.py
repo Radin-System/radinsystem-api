@@ -23,7 +23,7 @@ flask_secret_key = ENVMod.add(
     name = 'secret_key',
     section_name = 'flask',
     type_hint = str,
-    required = True
+    required = True,
 )
 
 flask_run_configs: Dict[str, Any] = {
