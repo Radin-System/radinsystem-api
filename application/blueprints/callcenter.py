@@ -73,7 +73,6 @@ def lookup():
     else:
         abort(401)
 
-
 @callcenter_bp.route('/originate', methods=['POST'])
 @private_addresses_only(request, callcenter_configs.get('phonebook_local_only', False))
 def originate():
