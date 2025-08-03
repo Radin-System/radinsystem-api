@@ -56,7 +56,7 @@ def originate():
     if not exten or not number: 
         abort(400)
 
-    originate_response = Originate(
+    Originate(
         CallerID=f'Calling: {number}',
         Channel=f'SIP/{exten}',
         Exten=number,
@@ -70,7 +70,4 @@ def originate():
         close_connection=True
     )
 
-    if not originate_response:
-        return abort(500)
-
-    return create_response(originate_response._dict)
+    return create_response({'exten': exten, 'number': number}, message=f'Originate Success')
