@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 from flask import Blueprint, abort, request
 from ami_client.operation.action import Originate
+from sarvcrm_api import SarvModule
 from ..utils import private_addresses_only
 from ..api_connections import ami_connection, sarv_connection
 from ..config import callcenter_configs
@@ -43,6 +44,35 @@ def phonebook():
 
     else:
         abort(400)
+
+@callcenter_bp.route('/lookup')
+@private_addresses_only(request, callcenter_configs.get('phonebook_local_only', False))
+def lookup():
+    number = request.args.get('number', "")
+    lookup_type = request.args.get('type', "")
+
+    if not number and not lookup_type:
+        abort(401)
+
+    if lookup_type == 'asterisk':
+        with sarv_connection:
+            results = sarv_connection.search_by_number(number)
+
+            if not results:
+                abort(404)
+
+            module: SarvModule = getattr(sarv_connection, results[0].get('module', 'Accounts'))
+            item_id = results[0].get('id', '')
+            fullname_en = module.read_record(item_id).get('fullname_en')
+
+        if not fullname_en:
+            abort(404)
+
+        return fullname_en
+
+    else:
+        abort(401)
+
 
 @callcenter_bp.route('/originate', methods=['POST'])
 @private_addresses_only(request, callcenter_configs.get('phonebook_local_only', False))
