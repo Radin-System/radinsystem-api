@@ -6,7 +6,6 @@ persian
 
 # Flask
 flask
-flask-sqlalchemy
 gunicorn
 
 # API Connections

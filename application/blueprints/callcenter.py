@@ -51,22 +51,22 @@ def lookup():
     number = request.args.get('number', "")
     lookup_type = request.args.get('type', "")
 
-    if not number and not lookup_type:
-        abort(401)
-
     if lookup_type == 'asterisk':
+        if not number and not lookup_type:
+            return number, 404
+
         with sarv_connection:
             results = sarv_connection.search_by_number(number)
 
             if not results:
-                abort(404)
+                return number, 404
 
             module: SarvModule = getattr(sarv_connection, results[0].get('module', 'Accounts'))
             item_id = results[0].get('id', '')
             fullname_en = module.read_record(item_id).get('fullname_en')
 
         if not fullname_en:
-            abort(404)
+            return number, 404
 
         return fullname_en
 
