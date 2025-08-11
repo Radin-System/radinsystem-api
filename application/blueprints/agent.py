@@ -3,7 +3,9 @@ from flask import Blueprint, request, abort, send_file
 from .. import agent_packages
 from ..utils import create_response, create_agent_file_path
 
+
 agent_bp = Blueprint('agent', __name__, url_prefix='/agent')
+
 
 @agent_bp.route('/update-details')
 def update_details():

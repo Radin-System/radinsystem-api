@@ -2,7 +2,9 @@ from flask import Blueprint
 from ..__version__ import get_version
 from ..utils import create_response
 
+
 root_bp = Blueprint('root', 'root', url_prefix='/')
+
 
 @root_bp.route('/')
 def index():

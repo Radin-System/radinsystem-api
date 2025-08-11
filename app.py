@@ -1,9 +1,19 @@
 from application import create_app
-from application.config import logging_config, flask_run_configs
+from application.config import Config
+from application.jobs import JobRegistry
 from application.utils import init_logging
 
-init_logging(**logging_config)
+init_logging(
+    log_file = str(Config.LOG_FILE.load_value()),
+    log_level = str(Config.LOG_LEVEL.load_value()),
+)
 app = create_app(__name__)
 
 if __name__ == '__main__':
-    app.run(**flask_run_configs)
+    JobRegistry.start_all()
+    app.run(
+        host = str(Config.FLASK_HOST.load_value()),
+        port = int(Config.FLASK_PORT.load_value() or 8080),
+        debug = bool(Config.FLASK_DEBUG.load_value())
+    )
+    JobRegistry.stop_all()

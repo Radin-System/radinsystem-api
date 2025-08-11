@@ -12,3 +12,5 @@ gunicorn
 pynetbox
 py-ami-client
 py-sarvcrm-api
+
+pytest

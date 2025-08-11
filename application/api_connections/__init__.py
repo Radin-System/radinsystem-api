@@ -1,11 +1,12 @@
-from ._api_tester import APITester
-from ._asterisk import ami_connection
-from ._netbox import netbox_connection
-from ._sarvcrm import sarv_connection
+from ._asterisk import ami_client
+from ._netbox import netbox_client
+from ._sarvcrm import sarv_client
+from ._telegram import telegram_bot
+
 
 __all__ = [
-    'APITester',
-    'ami_connection',
-    'netbox_connection',
-    'sarv_connection',
+    'ami_client',
+    'netbox_client',
+    'sarv_client',
+    'telegram_bot',
 ]

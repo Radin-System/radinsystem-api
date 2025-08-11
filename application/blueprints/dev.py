@@ -3,7 +3,9 @@ from application.utils._json_response import create_response
 from .. import agent_packages, load_agent_packages
 from ..utils import private_addresses_only
 
+
 dev_bp = Blueprint('dev', __name__, url_prefix='/dev')
+
 
 @dev_bp.route('/agent/add-package')
 @private_addresses_only(request)
