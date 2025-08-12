@@ -15,8 +15,8 @@ MESSAGE_TEMPLATE = '''
 🏢 شرکت: {account_name}
 👤 کاربر: {created_by_name}
 
-🖊️ #{type}
-🆔 #{case_number}
+🖊️ #ticket_{type}
+🆔 #ticket_{case_number}
 '''
 
 def html_to_text(html: str) -> str:
@@ -68,4 +68,4 @@ class PushServicesToTelegram(Job):
                     raise TimeoutError('No Response from telegram server')
 
 
-PushServicesToTelegram(300, 5)
+PushServicesToTelegram(600, 5)
