@@ -19,6 +19,8 @@ def handle_signal(signum, frame):
 
 
 if __name__ == '__main__':
+    import active_jobs as _  # init jobs
+
     signal.signal(signal.SIGINT, handle_signal)
     signal.signal(signal.SIGTERM, handle_signal)
 

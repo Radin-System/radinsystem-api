@@ -47,8 +47,7 @@ class PushServicesToTelegram(Job):
                 ],
                 limit=3,
             )
-            if not cases:
-                return
+            if not cases: return
 
             for case in cases:
                 case_id = case.get('id')
@@ -66,6 +65,3 @@ class PushServicesToTelegram(Job):
 
                 else:
                     raise TimeoutError('No Response from telegram server')
-
-
-PushServicesToTelegram(600, 5)
