@@ -1,7 +1,6 @@
 [Unit]
 Description=Radin Api Jobs
 After=radin-api.service
-Requires=radin-api.service
 
 [Service]
 User=radin
