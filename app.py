@@ -1,6 +1,5 @@
 from application import create_app
 from application.config import Config
-from application.jobs import JobRegistry
 from application.utils import init_logging
 
 init_logging(
@@ -10,6 +9,7 @@ init_logging(
 app = create_app(__name__)
 
 if __name__ == '__main__':
+    from application.jobs import JobRegistry
     JobRegistry.start_all()
     app.run(
         host = str(Config.FLASK_HOST.load_value()),
