@@ -1,0 +1,14 @@
+[Unit]
+Description=Radin Api Jobs
+After=radin-api.service
+Requires=radin-api.service
+
+[Service]
+User=radin
+Group=radin
+WorkingDirectory=/opt/radinsystem-api/
+ExecStart=/opt/radinsystem-api/.venv/bin/python job_worker.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

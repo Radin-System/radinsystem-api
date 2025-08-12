@@ -3,8 +3,6 @@
 APP_DIR="$(cd "$(dirname "$0")"; pwd)"
 VENV_DIR="$APP_DIR/.venv"
 DIST_DIR="$APP_DIR/dist"
-SERVICE_FILE="radin-api.service"
-SERVICE_NAME="radin-api"
 
 echo "[*] Creating virtual environment..."
 python3 -m venv "$VENV_DIR" || { echo "❌ Failed to create venv"; exit 1; }
@@ -20,21 +18,29 @@ echo "[*] Setting ownership and permissions..."
 sudo chown -R radin:radin "$APP_DIR"
 sudo chmod -R 755 "$APP_DIR"
 
-echo "[*] Copying systemd service file..."
-if [ "$(id -u)" -ne 0 ]; then
-    echo "⚠️  Root required to install systemd service. Please enter your password."
-    sudo cp "$DIST_DIR/$SERVICE_FILE" "/etc/systemd/system/$SERVICE_FILE" || { echo "❌ Failed to copy service file"; exit 1; }
-    sudo systemctl daemon-reload
-    sudo systemctl enable "$SERVICE_NAME"
-    sudo systemctl start "$SERVICE_NAME"
-else
-    cp "$DIST_DIR/$SERVICE_FILE" "/etc/systemd/system/$SERVICE_FILE" || { echo "❌ Failed to copy service file"; exit 1; }
-    systemctl daemon-reload
-    systemctl enable "$SERVICE_NAME"
-    systemctl start "$SERVICE_NAME"
-fi
+echo "[*] Installing all .service files in $DIST_DIR..."
+for SERVICE_FILE in "$DIST_DIR"/*.service; do
+    [ -e "$SERVICE_FILE" ] || { echo "⚠️ No .service files found."; break; }
+
+    SERVICE_NAME=$(basename "$SERVICE_FILE")
+    UNIT_NAME="${SERVICE_NAME%.service}"
+
+    echo "[*] Installing $SERVICE_NAME..."
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "⚠️ Root required to install systemd service: $SERVICE_NAME"
+        sudo cp "$SERVICE_FILE" "/etc/systemd/system/$SERVICE_NAME" || { echo "❌ Failed to copy $SERVICE_NAME"; exit 1; }
+        sudo systemctl daemon-reload
+        sudo systemctl enable "$UNIT_NAME"
+        sudo systemctl start "$UNIT_NAME"
+    else
+        cp "$SERVICE_FILE" "/etc/systemd/system/$SERVICE_NAME" || { echo "❌ Failed to copy $SERVICE_NAME"; exit 1; }
+        systemctl daemon-reload
+        systemctl enable "$UNIT_NAME"
+        systemctl start "$UNIT_NAME"
+    fi
+done
 
 echo "[*] Installation complete."
-echo "✅ App is now running as a service."
+echo "✅ All services from $DIST_DIR are now running."
 echo "🟢 To run manually:"
 echo "$VENV_DIR/bin/gunicorn -w 4 -b 0.0.0.0:8000 app:app"
