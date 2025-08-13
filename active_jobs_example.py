@@ -1,4 +1,4 @@
-from application.jobs.push_services_to_telegram import PushServicesToTelegram
+from application.jobs.sarv_cases_to_telegram import SarvCasesToTelegram
 
 
-PushServicesToTelegram(300, 5)
+SarvCasesToTelegram(300, 5)
