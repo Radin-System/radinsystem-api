@@ -22,9 +22,8 @@ def phonebook():
         abort(401)
 
     phonebook: List[Dict[str, Any]] = []
-    with sarv_client:
-        accounts = sarv_client.Accounts.read_list_all(caching=True)
-        contacts = sarv_client.Contacts.read_list_all(caching=True)
+    accounts = sarv_client.Accounts.read_all(caching=True)
+    contacts = sarv_client.Contacts.read_all(caching=True)
 
     if request.args.get('type') == 'micro-sip':
         for account in accounts:
@@ -57,15 +56,14 @@ def lookup():
         if not number and not lookup_type:
             return number, 404
 
-        with sarv_client:
-            results = sarv_client.search_by_number(number)
+        results = sarv_client.search_by_number(number)
 
-            if not results:
-                return number, 404
+        if not results:
+            return number, 404
 
-            module: SarvModule = getattr(sarv_client, results[0].get('module', 'Accounts'))
-            item_id = results[0].get('id', '')
-            fullname_en = module.read_record(item_id).get('fullname_en')
+        module: SarvModule = getattr(sarv_client, results[0].get('module', 'Accounts'))
+        item_id = results[0].get('id', '')
+        fullname_en = module.read_record(item_id).get('fullname_en')
 
         if not fullname_en:
             return number, 404

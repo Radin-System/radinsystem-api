@@ -28,68 +28,67 @@ def html_to_text(html: str) -> str:
 
 class SarvCasesToTelegram(Job):
     def run(self) -> None:
-        with sarv_client:
-            cases = sarv_client.Cases.read_list(
-                query="cases.status='New'",
-                selected_fields=[
-                    'id',
-                    'case_number',
-                    'name',
-                    'type',
-                    'status',
-                    'description',
-                    'account_name',
-                    'created_by_name',
-                ],
-                limit=2,
-            )
+        cases = sarv_client.Cases.read_list(
+            query="cases.status='New'",
+            selected_fields=[
+                'id',
+                'case_number',
+                'name',
+                'type',
+                'status',
+                'description',
+                'account_name',
+                'created_by_name',
+            ],
+            limit=2,
+        )
 
-            if not cases:
-                logger.debug("No new cases found.")
-                return
+        if not cases:
+            logger.debug("No new cases found.")
+            return
 
-            for case in cases:
-                case_id = case.get("id")
-                if not case_id:
-                    logger.warning("Case without 'id' found, skipping.")
+        for case in cases:
+            case_id = case.get("id")
+            if not case_id:
+                logger.warning("Case without 'id' found, skipping.")
+                continue
+
+            try:
+                # Prepare message
+                message_text = html_to_text(MESSAGE_TEMPLATE.format(**case))
+
+                # Send to Telegram
+                telegram_response = asyncio.run(
+                    telegram_bot.send_message(
+                        chat_id=CHAT_ID,
+                        message_thread_id=TICKET_THREAD,
+                        text=message_text,
+                    )
+                )
+
+                if not telegram_response:
+                    logger.error(f"No response from Telegram: case.id={case_id}")
                     continue
 
+                # Update SarvCRM
+                sarv_response = None
                 try:
-                    # Prepare message
-                    message_text = html_to_text(MESSAGE_TEMPLATE.format(**case))
-
-                    # Send to Telegram
-                    telegram_response = asyncio.run(
-                        telegram_bot.send_message(
-                            chat_id=CHAT_ID,
-                            message_thread_id=TICKET_THREAD,
-                            text=message_text,
-                        )
-                    )
-
-                    if not telegram_response:
-                        logger.error(f"No response from Telegram: case.id={case_id}")
-                        continue
-
-                    # Update SarvCRM
-                    sarv_response = None
-                    try:
-                        sarv_response = sarv_client.Cases.update(case_id, status="Pending")
-
-                    except Exception as e:
-                        logger.error(f"Error while updating case: id={case_id} - {repr(e)}")
-
-                    finally :
-                        if not sarv_response:
-                            logger.error(f"No response from sarvcrm, removing telegram message.")
-
-                            asyncio.run(
-                                telegram_bot.delete_message(
-                                    chat_id=CHAT_ID,
-                                    message_id=telegram_response.message_id
-                                )
-                            )
-                            logger.info(f"Deleted Telegram message for failed Sarv update: case.id={case_id}")
+                    sarv_response = sarv_client.Cases.update(case_id, status="Pending")
 
                 except Exception as e:
-                    logger.exception(f"Unexpected error processing case.id={case_id}: {repr(e)}")
+                    logger.error(f"Error while updating case: id={case_id} - {repr(e)}")
+
+                finally :
+                    if not sarv_response:
+                        logger.error(f"No response from sarvcrm, removing telegram message.")
+
+                        asyncio.run(
+                            telegram_bot.delete_message(
+                                chat_id=CHAT_ID,
+                                message_id=telegram_response.message_id
+                            )
+                        )
+                        logger.info(f"Deleted Telegram message for failed Sarv update: case.id={case_id}")
+
+            except Exception as e:
+                logger.exception(f"Unexpected error processing case.id={case_id}: {repr(e)}")
