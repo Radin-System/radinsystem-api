@@ -1,7 +1,7 @@
 import logging, threading
 from typing import List, ClassVar
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 class JobRegistry:
     _jobs: ClassVar[List['Job']] = []
@@ -24,8 +24,11 @@ class JobRegistry:
 class Job:
     def __init__(self, interval: float = 300, timeout: float = 3) -> None:
         """
-        :param interval: Time in seconds between runs.
-        :param timeout: Max time to wait for thread to join on stop.
+        Creates a job that runs in intervals seconds.
+
+        Args:
+            interval(float): Time in seconds between runs.
+            timeout(float): Max time to wait for thread to join on stop.
         """
         self.interval = interval
         self.timeout = timeout
@@ -46,15 +49,17 @@ class Job:
         while not self._stop_event.is_set():
             try:
                 self._sleeping = False
+                logger.debug(f'Running job: {self.__class__.__name__}')
                 self.run()
+                logger.debug(f'Finished job: {self.__class__.__name__}')
             except Exception as e:
-                # Optionally log exceptions here
                 logger.error(f'Error executing job({self.__class__.__name__}): {repr(e)}')
             finally:
                 if self._stop_event.is_set():
                     break
                 self._sleeping = True
-                self._stop_event.wait(self.interval)  # sleep but wake early if stopped
+                logger.debug(f'Waiting for {self.interval} in job: {self.__class__.__name__}')
+                self._stop_event.wait(self.interval)
 
     def start(self) -> None:
         with self._lock:

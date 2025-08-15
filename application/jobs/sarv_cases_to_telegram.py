@@ -41,6 +41,7 @@ class SarvCasesToTelegram(Job):
                 'created_by_name',
             ],
             limit=2,
+            caching=False,
         )
 
         if not cases:
