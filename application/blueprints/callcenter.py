@@ -3,7 +3,7 @@ from flask import Blueprint, abort, request
 from ami_client.operation.action import Originate
 from sarvcrm_api import SarvModule
 from ..utils import private_addresses_only
-from ..api_connections import ami_client, sarv_client
+from ..connections import ami_client, sarv_client
 from ..config import Config
 from ..utils import create_response, convert_sarv_item_to_mikrosip
 

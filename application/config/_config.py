@@ -74,6 +74,12 @@ TELEGRAM_TOKEN = ENVMod.add(
     type_hint = str,
     required = True,
 )
+TELEGRAM_WEBHOOK = ENVMod.add(
+    name = 'webhook',
+    section_name = 'telegram',
+    type_hint = str,
+    required = True,
+)
 TELEGRAM_CHAT_ID = ENVMod.add(
     name = 'chat_id',
     section_name = 'telegram',

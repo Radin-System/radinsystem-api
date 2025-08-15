@@ -2,7 +2,7 @@ import asyncio
 import logging
 from bs4 import BeautifulSoup
 from ..config import Config
-from ..api_connections import sarv_client, telegram_bot
+from ..connections import sarv_client, telegram_app
 from ._base import Job
 
 logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ class SarvCasesToTelegram(Job):
 
                 # Send to Telegram
                 telegram_response = asyncio.run(
-                    telegram_bot.send_message(
+                    telegram_app.bot.send_message(
                         chat_id=CHAT_ID,
                         message_thread_id=TICKET_THREAD,
                         text=message_text,
@@ -84,7 +84,7 @@ class SarvCasesToTelegram(Job):
                         logger.error(f"No response from sarvcrm, removing telegram message.")
 
                         asyncio.run(
-                            telegram_bot.delete_message(
+                            telegram_app.bot.delete_message(
                                 chat_id=CHAT_ID,
                                 message_id=telegram_response.message_id
                             )
