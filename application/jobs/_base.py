@@ -77,4 +77,6 @@ class Job:
                 return
             self._active = False
             self._stop_event.set()
-        self._thread.join(timeout=self.timeout)
+
+        if threading.current_thread != self._thread:
+            self._thread.join(timeout=self.timeout)

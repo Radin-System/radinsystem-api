@@ -9,6 +9,7 @@ init_logging(
 app = create_app(__name__)
 
 if __name__ == '__main__':
+    import active_jobs
     from application.jobs import JobRegistry
     JobRegistry.start_all()
     app.run(

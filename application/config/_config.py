@@ -80,6 +80,11 @@ TELEGRAM_WEBHOOK = ENVMod.add(
     type_hint = str,
     required = True,
 )
+TELEGRAM_POLLING = ENVMod.add(
+    name = 'polling',
+    section_name = 'telegram',
+    type_hint = bool,
+)
 TELEGRAM_CHAT_ID = ENVMod.add(
     name = 'chat_id',
     section_name = 'telegram',
