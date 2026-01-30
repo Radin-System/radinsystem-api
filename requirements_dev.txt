@@ -2,15 +2,14 @@
 requests
 python-dotenv
 classmods
-persian
 
 # Flask
 flask
 gunicorn
 
 # API Connections
-pynetbox
 py-ami-client
-py-sarvcrm-api
+py-zammad-cti
 
+# Dev
 pytest

@@ -12,6 +12,4 @@ __cache__/
 .env
 dev_*.*
 
-
 active_jobs.py
-agent_packages/
