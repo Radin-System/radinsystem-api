@@ -1,12 +1,7 @@
 import ipaddress
-from typing import Any
 from functools import wraps
 from flask import abort
 
-def token_required(client, request) -> Any:
-    if 'Authorization' in request.headers:
-        _, token = request.headers.get('Authorization', ' ').split('Token ', 1)
-        tenant = client.tenancy
 
 def private_addresses_only(request, config=True):
     def decorator(func):

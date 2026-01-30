@@ -1,4 +1,4 @@
-from application.jobs.sarv_cases_to_telegram import SarvCasesToTelegram
+from application.jobs.ami_to_cti import AMIToCTI
 
 
-SarvCasesToTelegram(300, 5)
+AMIToCTI(300, 5)

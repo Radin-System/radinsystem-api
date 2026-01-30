@@ -2,9 +2,7 @@ import time
 from flask import Blueprint, redirect, url_for, request
 from ..utils import create_response
 
-
 diagnose_bp = Blueprint('diagnose', 'diagnose', url_prefix='/diagnose')
-
 
 @diagnose_bp.route('/test')
 def test():
