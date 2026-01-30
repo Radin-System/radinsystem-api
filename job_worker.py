@@ -1,13 +1,13 @@
 import sys, time, signal, logging
 from application.jobs import JobRegistry
-from application.config import Config
+from application.config import app_config
 from application.utils import init_logging
 
 running = True
 
 init_logging(
-    log_file = str(Config.LOG_FILE.load_value()),
-    log_level = str(Config.LOG_LEVEL.load_value()),
+    log_file = str(app_config.log_file),
+    log_level = app_config.log_level,
 )
 
 logger = logging.getLogger()

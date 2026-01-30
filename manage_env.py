@@ -1,5 +1,6 @@
 from classmods import ENVMod
 from ami_client import AMIClient as _
+from zammad_cti import CTIClient as _
 import application.config as _
 
 

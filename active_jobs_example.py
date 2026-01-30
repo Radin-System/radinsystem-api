@@ -1,4 +1,4 @@
 from application.jobs.ami_to_cti import AMIToCTI
 
 
-AMIToCTI(300, 5)
+AMIToCTI(10, 15)
